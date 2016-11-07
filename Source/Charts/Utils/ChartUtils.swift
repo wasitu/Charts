@@ -20,7 +20,7 @@ open class ChartUtils
 {
     fileprivate static var _defaultValueFormatter: IValueFormatter = ChartUtils.generateDefaultValueFormatter()
     
-    struct Math
+    public struct Math
     {
         static let FDEG2RAD = CGFloat(M_PI / 180.0)
         static let FRAD2DEG = CGFloat(180.0 / M_PI)
