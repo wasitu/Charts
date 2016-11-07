@@ -22,10 +22,10 @@ open class ChartUtils
     
     public struct Math
     {
-        static let FDEG2RAD = CGFloat(M_PI / 180.0)
-        static let FRAD2DEG = CGFloat(180.0 / M_PI)
-        static let DEG2RAD = M_PI / 180.0
-        static let RAD2DEG = 180.0 / M_PI
+       public static let FDEG2RAD = CGFloat(M_PI / 180.0)
+       public static let FRAD2DEG = CGFloat(180.0 / M_PI)
+       public static let DEG2RAD = M_PI / 180.0
+       public static let RAD2DEG = 180.0 / M_PI
     }
     
     internal class func roundToNextSignificant(number: Double) -> Double
