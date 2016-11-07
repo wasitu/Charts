@@ -214,8 +214,8 @@ open class AxisBase: ComponentBase
     open var axisRange = Double(0)
     
     /// the number of label entries the axis should have
-    /// max = 25,
-    /// min = 2,
+    /// max = 30,
+    /// min = 1,
     /// default = 6,
     /// be aware that this number is not fixed and can only be approximated
     open var labelCount: Int
@@ -228,13 +228,13 @@ open class AxisBase: ComponentBase
         {
             _labelCount = newValue
             
-            if _labelCount > 25
+            if _labelCount > 30
             {
-                _labelCount = 25
+                _labelCount = 30
             }
-            if _labelCount < 2
+            if _labelCount < 1
             {
-                _labelCount = 2
+                _labelCount = 1
             }
             
             forceLabelsEnabled = false
