@@ -20,12 +20,12 @@ open class ChartUtils
 {
     fileprivate static var _defaultValueFormatter: IValueFormatter = ChartUtils.generateDefaultValueFormatter()
     
-    internal struct Math
+    struct Math
     {
-        internal static let FDEG2RAD = CGFloat(M_PI / 180.0)
-        internal static let FRAD2DEG = CGFloat(180.0 / M_PI)
-        internal static let DEG2RAD = M_PI / 180.0
-        internal static let RAD2DEG = 180.0 / M_PI
+        static let FDEG2RAD = CGFloat(M_PI / 180.0)
+        static let FRAD2DEG = CGFloat(180.0 / M_PI)
+        static let DEG2RAD = M_PI / 180.0
+        static let RAD2DEG = 180.0 / M_PI
     }
     
     internal class func roundToNextSignificant(number: Double) -> Double
