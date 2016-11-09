@@ -224,19 +224,19 @@ open class XAxisRenderer: AxisRendererBase
             position.y = 0.0
             position = position.applying(valueToPixelMatrix)
             
-            if viewPortHandler.isInBoundsX(position.x)
-            {
-                let label = xAxis.valueFormatter?.stringForValue(xAxis.entries[i], axis: xAxis) ?? ""
-
-                let labelns = label as NSString
+            if viewPortHandler.isInBoundsX(position.x) {
+                var attributedString = xAxis.valueFormatter?.attributedStringForValue?(value: xAxis.entries[i], axis: xAxis, attributes: labelAttrs)
+                if attributedString == nil {
+                    let text = xAxis.valueFormatter?.stringForValue?(xAxis.entries[i], axis: xAxis) ?? ""
+                    attributedString = NSAttributedString(string: text, attributes: labelAttrs)
+                }
                 
                 if xAxis.isAvoidFirstLastClippingEnabled
                 {
+                    let width = attributedString!.boundingRect(with: labelMaxSize, options: .usesLineFragmentOrigin, context: nil).size.width
                     // avoid clipping of the last
                     if i == xAxis.entryCount - 1 && xAxis.entryCount > 1
                     {
-                        let width = labelns.boundingRect(with: labelMaxSize, options: .usesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
-                        
                         if width > viewPortHandler.offsetRight * 2.0
                             && position.x + width > viewPortHandler.chartWidth
                         {
@@ -245,16 +245,14 @@ open class XAxisRenderer: AxisRendererBase
                     }
                     else if i == 0
                     { // avoid clipping of the first
-                        let width = labelns.boundingRect(with: labelMaxSize, options: .usesLineFragmentOrigin, attributes: labelAttrs, context: nil).size.width
                         position.x += width / 2.0
                     }
                 }
                 
                 drawLabel(context: context,
-                          formattedLabel: label,
                           x: position.x,
                           y: pos,
-                          attributes: labelAttrs,
+                          attributedString: attributedString!,
                           constrainedToSize: labelMaxSize,
                           anchor: anchor,
                           angleRadians: labelRotationAngleRadians)
@@ -264,19 +262,17 @@ open class XAxisRenderer: AxisRendererBase
     
     open func drawLabel(
         context: CGContext,
-        formattedLabel: String,
         x: CGFloat,
         y: CGFloat,
-        attributes: [String: NSObject],
+        attributedString: NSAttributedString,
         constrainedToSize: CGSize,
         anchor: CGPoint,
         angleRadians: CGFloat)
     {
         ChartUtils.drawMultilineText(
             context: context,
-            text: formattedLabel,
             point: CGPoint(x: x, y: y),
-            attributes: attributes,
+            attributedString: attributedString,
             constrainedToSize: constrainedToSize,
             anchor: anchor,
             angleRadians: angleRadians)
@@ -440,42 +436,38 @@ open class XAxisRenderer: AxisRendererBase
             if limitLine.labelPosition == .rightTop
             {
                 ChartUtils.drawText(context: context,
-                    text: label,
                     point: CGPoint(
                         x: position.x + xOffset,
                         y: viewPortHandler.contentTop + yOffset),
                     align: .left,
-                    attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor])
+                    attributedString: NSAttributedString(string: label, attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor]))
             }
             else if limitLine.labelPosition == .rightBottom
             {
                 ChartUtils.drawText(context: context,
-                    text: label,
                     point: CGPoint(
                         x: position.x + xOffset,
                         y: viewPortHandler.contentBottom - labelLineHeight - yOffset),
                     align: .left,
-                    attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor])
+                    attributedString: NSAttributedString(string: label, attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor]))
             }
             else if limitLine.labelPosition == .leftTop
             {
                 ChartUtils.drawText(context: context,
-                    text: label,
                     point: CGPoint(
                         x: position.x - xOffset,
                         y: viewPortHandler.contentTop + yOffset),
                     align: .right,
-                    attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor])
+                    attributedString: NSAttributedString(string: label, attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor]))
             }
             else
             {
                 ChartUtils.drawText(context: context,
-                    text: label,
                     point: CGPoint(
                         x: position.x - xOffset,
                         y: viewPortHandler.contentBottom - labelLineHeight - yOffset),
                     align: .right,
-                    attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor])
+                    attributedString: NSAttributedString(string: label, attributes: [NSFontAttributeName: limitLine.valueFont, NSForegroundColorAttributeName: limitLine.valueTextColor]))
             }
         }
     }
