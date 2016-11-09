@@ -125,25 +125,35 @@ open class ChartUtils
     
     open class func drawText(context: CGContext, text: String, point: CGPoint, align: NSTextAlignment, attributes: [String : AnyObject]?)
     {
+        drawText(context: context, point: point, align: align, attributedString: NSAttributedString(string: text, attributes: attributes))
+    }
+    
+    open class func drawText(context: CGContext, point: CGPoint, align: NSTextAlignment, attributedString: NSAttributedString)
+    {
         var point = point
         
         if align == .center
         {
-            point.x -= text.size(attributes: attributes).width / 2.0
+            point.x -= attributedString.size().width / 2.0
         }
         else if align == .right
         {
-            point.x -= text.size(attributes: attributes).width
+            point.x -= attributedString.size().width
         }
         
         NSUIGraphicsPushContext(context)
         
-        (text as NSString).draw(at: point, withAttributes: attributes)
+        attributedString.draw(at: point)
         
         NSUIGraphicsPopContext()
     }
     
     open class func drawText(context: CGContext, text: String, point: CGPoint, attributes: [String : AnyObject]?, anchor: CGPoint, angleRadians: CGFloat)
+    {
+        drawText(context: context, point: point, attributedString: NSAttributedString(string: text, attributes: attributes), anchor: anchor, angleRadians: angleRadians)
+    }
+    
+    open class func drawText(context: CGContext, point: CGPoint, attributedString: NSAttributedString, anchor: CGPoint, angleRadians: CGFloat)
     {
         var drawOffset = CGPoint()
         
@@ -151,7 +161,7 @@ open class ChartUtils
         
         if angleRadians != 0.0
         {
-            let size = text.size(attributes: attributes)
+            let size = attributedString.size()
             
             // Move the text drawing rect in a way that it always rotates around its center
             drawOffset.x = -size.width * 0.5
@@ -172,7 +182,7 @@ open class ChartUtils
             context.translateBy(x: translate.x, y: translate.y)
             context.rotate(by: angleRadians)
             
-            (text as NSString).draw(at: drawOffset, withAttributes: attributes)
+            attributedString.draw(at: drawOffset)
             
             context.restoreGState()
         }
@@ -180,7 +190,7 @@ open class ChartUtils
         {
             if anchor.x != 0.0 || anchor.y != 0.0
             {
-                let size = text.size(attributes: attributes)
+                let size = attributedString.size()
                 
                 drawOffset.x = -size.width * anchor.x
                 drawOffset.y = -size.height * anchor.y
@@ -189,13 +199,13 @@ open class ChartUtils
             drawOffset.x += point.x
             drawOffset.y += point.y
             
-            (text as NSString).draw(at: drawOffset, withAttributes: attributes)
+            attributedString.draw(at: drawOffset)
         }
         
         NSUIGraphicsPopContext()
     }
     
-    internal class func drawMultilineText(context: CGContext, text: String, knownTextSize: CGSize, point: CGPoint, attributes: [String : AnyObject]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
+    internal class func drawMultilineText(context: CGContext, knownTextSize: CGSize, point: CGPoint, attributedString: NSAttributedString, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
     {
         var rect = CGRect(origin: CGPoint(), size: knownTextSize)
         
@@ -222,7 +232,7 @@ open class ChartUtils
             context.translateBy(x: translate.x, y: translate.y)
             context.rotate(by: angleRadians)
             
-            (text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            attributedString.draw(with: rect, options: .usesLineFragmentOrigin, context: nil)
             
             context.restoreGState()
         }
@@ -237,17 +247,25 @@ open class ChartUtils
             rect.origin.x += point.x
             rect.origin.y += point.y
             
-            (text as NSString).draw(with: rect, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+            attributedString.draw(with: rect, options: .usesLineFragmentOrigin, context: nil)
         }
         
         NSUIGraphicsPopContext()
     }
     
+    internal class func drawMultilineText(context: CGContext, point: CGPoint, attributedString: NSAttributedString, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
+    {
+        let rect = attributedString.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, context: nil)
+        drawMultilineText(context: context, knownTextSize: rect.size, point: point, attributedString: attributedString, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
+    }
+    
     internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [String : AnyObject]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
     {
-        let rect = text.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
-        drawMultilineText(context: context, text: text, knownTextSize: rect.size, point: point, attributes: attributes, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
+        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        let rect = attributedString.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, context: nil)
+        drawMultilineText(context: context, knownTextSize: rect.size, point: point, attributedString: attributedString, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
     }
+
     
     /// - returns: An angle between 0.0 < 360.0 (not less than zero, less than 360)
     internal class func normalizedAngleFromAngle(_ angle: CGFloat) -> CGFloat
