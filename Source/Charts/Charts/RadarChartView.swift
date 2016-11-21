@@ -29,6 +29,9 @@ open class RadarChartView: PieRadarChartViewBase
     /// color for the web lines in between the lines that come from the center.
     open var innerWebColor = NSUIColor(red: 122/255.0, green: 122/255.0, blue: 122.0/255.0, alpha: 1.0)
     
+    /// color for the outermost web lines in between the lines that come from the center <- I want to create this parameter
+    open var outermostWebColor: NSUIColor? = nil
+    
     /// transparency the grid is drawn with (0.0 - 1.0)
     open var webAlpha: CGFloat = 150.0 / 255.0
     
