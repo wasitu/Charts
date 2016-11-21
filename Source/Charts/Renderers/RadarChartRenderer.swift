@@ -247,13 +247,19 @@ open class RadarChartRenderer: LineRadarRenderer
         
         // draw the inner-web
         context.setLineWidth(chart.innerWebLineWidth)
-        context.setStrokeColor(chart.innerWebColor.cgColor)
         context.setAlpha(chart.webAlpha)
         
         let labelCount = chart.yAxis.entryCount
         
         for j in 0 ..< labelCount
         {
+            if let color = chart.outermostWebColor, j == (labelCount - 1) {
+                context.setStrokeColor(color.cgColor)
+            }
+            else {
+                context.setStrokeColor(chart.innerWebColor.cgColor)
+            }
+
             for i in 0 ..< data.entryCount
             {
                 let r = CGFloat(chart.yAxis.entries[j] - chart.chartYMin) * factor
