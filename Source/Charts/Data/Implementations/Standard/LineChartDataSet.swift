@@ -175,6 +175,9 @@ open class LineChartDataSet: LineRadarChartDataSet, ILineChartDataSet
     /// Line cap type, default is CGLineCap.Butt
     open var lineCapType = CGLineCap.butt
     
+    /// Line join type, default is .miter
+    open var lineJoinType = CGLineJoin.miter
+    
     /// formatter for customizing the position of the fill-line
     fileprivate var _fillFormatter: IFillFormatter = DefaultFillFormatter()
     
@@ -209,6 +212,7 @@ open class LineChartDataSet: LineRadarChartDataSet, ILineChartDataSet
         copy.lineDashPhase = lineDashPhase
         copy.lineDashLengths = lineDashLengths
         copy.lineCapType = lineCapType
+        copy.lineJoinType = lineJoinType
         copy.drawCirclesEnabled = drawCirclesEnabled
         copy.drawCircleHoleEnabled = drawCircleHoleEnabled
         copy.mode = mode
