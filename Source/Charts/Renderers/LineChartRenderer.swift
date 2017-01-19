@@ -317,7 +317,7 @@ open class LineChartRenderer: LineRadarRenderer
         }
         
         context.saveGState()
-        
+        context.setLineJoin(dataSet.lineJoinType)
         context.setLineCap(dataSet.lineCapType)
 
         // more than 1 color
