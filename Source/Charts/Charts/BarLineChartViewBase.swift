@@ -224,12 +224,10 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         if let animator = renderer?.animator {
             animationRect.size.width *= CGFloat(animator.phaseX)
         }
-        context.saveGState()
-        context.clip(to: animationRect)
         
         // make sure the data cannot be drawn outside the content-rect
         context.saveGState()
-        context.clip(to: _viewPortHandler.contentRect)
+        context.clip(to: animationRect)
         renderer?.drawData(context: context)
         
         // if highlighting is enabled
@@ -261,6 +259,8 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         _leftYAxisRenderer.renderAxisLabels(context: context)
         _rightYAxisRenderer.renderAxisLabels(context: context)
 
+        context.saveGState()
+        context.clip(to: animationRect)
         if clipValuesToContentEnabled
         {
             context.saveGState()
