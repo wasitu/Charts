@@ -214,6 +214,14 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             _rightYAxisRenderer?.renderLimitLines(context: context)
         }
         
+        // for animation clipping
+        var animationRect = _viewPortHandler.contentRect
+        if let animator = renderer?.animator {
+            animationRect.size.width *= CGFloat(animator.phaseX)
+        }
+        context.saveGState()
+        context.clip(to: animationRect)
+        
         // make sure the data cannot be drawn outside the content-rect
         context.saveGState()
         context.clip(to: _viewPortHandler.contentRect)
@@ -265,6 +273,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         drawDescription(context: context)
         
         drawMarkers(context: context)
+        context.restoreGState()
     }
     
     fileprivate var _autoScaleLastLowestVisibleX: Double?

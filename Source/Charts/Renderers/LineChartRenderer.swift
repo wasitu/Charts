@@ -95,7 +95,7 @@ open class LineChartRenderer: LineRadarRenderer
         
         let phaseY = animator.phaseY
         
-        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: nil)
         
         // get the color that is specified for this position from the DataSet
         let drawingColor = dataSet.colors.first!
@@ -192,7 +192,7 @@ open class LineChartRenderer: LineRadarRenderer
         
         let phaseY = animator.phaseY
         
-        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: nil)
         
         // get the color that is specified for this position from the DataSet
         let drawingColor = dataSet.colors.first!
@@ -308,7 +308,7 @@ open class LineChartRenderer: LineRadarRenderer
         
         let phaseY = animator.phaseY
         
-        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+        _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: nil)
         
         // if drawing filled is enabled
         if dataSet.isDrawFilledEnabled && entryCount > 0
@@ -546,7 +546,7 @@ open class LineChartRenderer: LineRadarRenderer
                     valOffset = valOffset / 2
                 }
                 
-                _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+                _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: nil)
                 
                 for j in stride(from: _xBounds.min, through: min(_xBounds.min + _xBounds.range, _xBounds.max), by: 1)
                 {
@@ -618,7 +618,7 @@ open class LineChartRenderer: LineRadarRenderer
             let trans = dataProvider.getTransformer(forAxis: dataSet.axisDependency)
             let valueToPixelMatrix = trans.valueToPixelMatrix
             
-            _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: animator)
+            _xBounds.set(chart: dataProvider, dataSet: dataSet, animator: nil)
             
             let circleRadius = dataSet.circleRadius
             let circleDiameter = circleRadius * 2.0
@@ -735,12 +735,7 @@ open class LineChartRenderer: LineRadarRenderer
             
             let x = high.x // get the x-position
             let y = high.y * Double(animator.phaseY)
-            
-            if x > chartXMax * animator.phaseX
-            {
-                continue
-            }
-            
+                        
             let trans = dataProvider.getTransformer(forAxis: set.axisDependency)
             
             let pt = trans.pixelForValues(x: x, y: y)
