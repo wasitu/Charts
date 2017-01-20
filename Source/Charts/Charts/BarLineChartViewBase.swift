@@ -231,9 +231,9 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             renderer?.drawHighlighted(context: context, indices: _indicesToHighlight)
         }
         
-        context.restoreGState()
+        renderer?.drawExtras(context: context)
         
-        renderer!.drawExtras(context: context)
+        context.restoreGState()
         
         if !_xAxis.isDrawLimitLinesBehindDataEnabled
         {
@@ -259,13 +259,13 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             context.saveGState()
             context.clip(to: _viewPortHandler.contentRect)
             
-            renderer!.drawValues(context: context)
+            renderer?.drawValues(context: context)
             
             context.restoreGState()
         }
         else
         {
-            renderer!.drawValues(context: context)
+            renderer?.drawValues(context: context)
         }
 
         _legendRenderer.renderLegend(context: context)
