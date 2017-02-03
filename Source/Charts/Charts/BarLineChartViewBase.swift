@@ -220,7 +220,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         }
         
         // for animation clipping
-        var animationRect = _viewPortHandler.contentRect
+        var animationRect = bounds
         if let animator = renderer?.animator {
             animationRect.size.width *= CGFloat(animator.phaseX)
         }
