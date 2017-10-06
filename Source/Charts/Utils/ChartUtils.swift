@@ -123,7 +123,7 @@ open class ChartUtils
         NSUIGraphicsPopContext()
     }
     
-    open class func drawText(context: CGContext, text: String, point: CGPoint, align: NSTextAlignment, attributes: [String : AnyObject]?)
+    open class func drawText(context: CGContext, text: String, point: CGPoint, align: NSTextAlignment, attributes: [NSAttributedStringKey : Any]?)
     {
         drawText(context: context, point: point, align: align, attributedString: NSAttributedString(string: text, attributes: attributes))
     }
@@ -148,7 +148,7 @@ open class ChartUtils
         NSUIGraphicsPopContext()
     }
     
-    open class func drawText(context: CGContext, text: String, point: CGPoint, attributes: [String : AnyObject]?, anchor: CGPoint, angleRadians: CGFloat)
+    open class func drawText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedStringKey : Any]?, anchor: CGPoint, angleRadians: CGFloat)
     {
         drawText(context: context, point: point, attributedString: NSAttributedString(string: text, attributes: attributes), anchor: anchor, angleRadians: angleRadians)
     }
@@ -259,7 +259,7 @@ open class ChartUtils
         drawMultilineText(context: context, knownTextSize: rect.size, point: point, attributedString: attributedString, constrainedToSize: constrainedToSize, anchor: anchor, angleRadians: angleRadians)
     }
     
-    internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [String : AnyObject]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
+    internal class func drawMultilineText(context: CGContext, text: String, point: CGPoint, attributes: [NSAttributedStringKey : Any]?, constrainedToSize: CGSize, anchor: CGPoint, angleRadians: CGFloat)
     {
         let attributedString = NSAttributedString(string: text, attributes: attributes)
         let rect = attributedString.boundingRect(with: constrainedToSize, options: .usesLineFragmentOrigin, context: nil)
